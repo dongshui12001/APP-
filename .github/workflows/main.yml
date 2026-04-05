@@ -1,0 +1,22 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Pack APK
+        run: flet pack main_flet.py --name 法律文书助手 --add-data "pay_qrcode.png;."
+      - uses: actions/upload-artifact@v3
+        with:
+          name: 法律文书助手
+          path: ./build/apk/*.apk
